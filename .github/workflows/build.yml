@@ -39,8 +39,8 @@ jobs:
             Author         = "IRCF"
           }
 
-          # Convert to JSON and write to versioninfo.json with UTF-8 encoding
-          $jsonContent | ConvertTo-Json -Compress | Out-File -FilePath versioninfo.json -Encoding UTF8
+          # Convert to JSON and write to versioninfo.json with UTF-8 encoding (using Set-Content)
+          $jsonContent | ConvertTo-Json -Compress | Set-Content -Path versioninfo.json -Encoding UTF8
 
           # Verify the content of versioninfo.json by printing it
           Write-Host "Generated versioninfo.json content:"
