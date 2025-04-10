@@ -1,44 +1,13 @@
-name: Build ProxyReset Executable
+- name: Build proxy reset executable (64-bit)
+  shell: pwsh
+  run: |
+    $env:GOARCH="amd64"
+    $env:GOOS="windows"
+    go build -o proxyreset.exe proxyreset.go
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
-jobs:
-  build:
-    runs-on: windows-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: '1.18'
-
-      - name: Build proxy reset executable (64-bit)
-        run: |
-          GOARCH=amd64 GOOS=windows go build -o proxyreset.exe proxyreset.go
-
-      - name: Build proxy reset executable (32-bit)
-        run: |
-          GOARCH=386 GOOS=windows go build -o proxyreset-32.exe proxyreset.go
-
-      - name: Create a GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            proxyreset.exe
-            proxyreset-32.exe
-
-      - name: Upload executables to release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            proxyreset.exe
-            proxyreset-32.exe
+- name: Build proxy reset executable (32-bit)
+  shell: pwsh
+  run: |
+    $env:GOARCH="386"
+    $env:GOOS="windows"
+    go build -o proxyreset-32.exe proxyreset.go
