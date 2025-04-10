@@ -54,3 +54,4 @@ jobs:
             proxy-reset-arm64.exe
             proxy-reset-arm64.zip
           tag: '${{ github.event.head_commit.message }}'
+          draft: true
