@@ -27,8 +27,8 @@ jobs:
           # Remove the leading 'v' from the commit message using PowerShell
           $VERSION = "${{ github.event.head_commit.message }}" -replace '^v', ''
 
-          # Use rsrc to embed the icon directly
-          rsrc -manifest=none -ico=icon.ico -o rsrc.syso
+          # Use rsrc to embed the icon directly (without manifest)
+          rsrc -ico=icon.ico -o rsrc.syso
 
       - name: Build and zip (ia32)
         run: |
