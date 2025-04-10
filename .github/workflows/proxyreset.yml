@@ -29,10 +29,16 @@ jobs:
         run: |
           GOARCH=386 GOOS=windows go build -o proxyreset-32.exe proxyreset.go
 
-      - name: Upload executables
-        uses: actions/upload-artifact@v2
+      - name: Create a GitHub Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: proxy-reset-executables
-          path: |
+          files: |
+            proxyreset.exe
+            proxyreset-32.exe
+
+      - name: Upload executables to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
             proxyreset.exe
             proxyreset-32.exe
