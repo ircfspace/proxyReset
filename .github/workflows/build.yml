@@ -27,27 +27,8 @@ jobs:
           # Remove the leading 'v' from the commit message using PowerShell
           $VERSION = "${{ github.event.head_commit.message }}" -replace '^v', ''
 
-          # Create the JSON metadata content
-          $jsonContent = @{
-            CompanyName    = "IRCF"
-            FileDescription = "ProxyReset is a lightweight Go tool for Windows that disables proxy settings without admin privileges, supporting multiple Windows versions and architectures."
-            FileVersion    = $VERSION
-            InternalName   = "ProxyReset"
-            OriginalFilename = "proxy-reset.exe"
-            ProductName    = "ProxyReset"
-            ProductVersion = $VERSION
-            Author         = "IRCF"
-          }
-
-          # Convert to JSON and write to versioninfo.json with UTF-8 encoding (using Set-Content)
-          $jsonContent | ConvertTo-Json -Compress | Set-Content -Path versioninfo.json -Encoding UTF8
-
-          # Verify the content of versioninfo.json by printing it
-          Write-Host "Generated versioninfo.json content:"
-          Get-Content versioninfo.json
-
-          # Generate resource files with icon and metadata
-          goversioninfo -icon=./icon.ico -json=versioninfo.json -manifest=none
+          # Generate resource files with icon and metadata directly via goversioninfo
+          goversioninfo -icon=./icon.ico -manifest=none -windows-version=$VERSION -product-version=$VERSION -file-version=$VERSION -company-name="IRCF" -author="IRCF" -file-description="ProxyReset is a lightweight Go tool for Windows that disables proxy settings without admin privileges, supporting multiple Windows versions and architectures." -product-name="ProxyReset" -original-filename="proxy-reset.exe" -internal-name="ProxyReset"
 
       - name: Build and zip (ia32)
         run: |
