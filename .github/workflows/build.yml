@@ -24,24 +24,30 @@ jobs:
           $env:GOARCH="386"
           $env:GOOS="windows"
           go build -o proxyReset-ia32.exe proxyReset.go
+          Compress-Archive -Path proxyReset-ia32.exe -DestinationPath proxyReset-ia32.zip
 
       - name: Build proxy reset executable (x64)
         run: |
           $env:GOARCH="amd64"
           $env:GOOS="windows"
           go build -o proxyReset-x64.exe proxyReset.go
+          Compress-Archive -Path proxyReset-x64.exe -DestinationPath proxyReset-x64.zip
 
       - name: Build proxy reset executable (arm64)
         run: |
           $env:GOARCH="arm64"
           $env:GOOS="windows"
           go build -o proxyReset-arm64.exe proxyReset.go
+          Compress-Archive -Path proxyReset-arm64.exe -DestinationPath proxyReset-arm64.zip
 
       - name: Upload to releases
         uses: ncipollo/release-action@v1
         with:
           artifacts: |
             proxyReset-ia32.exe
+            proxyReset-ia32.zip
             proxyReset-x64.exe
+            proxyReset-x64.zip
             proxyReset-arm64.exe
+            proxyReset-arm64.zip
           tag: '${{ github.event.head_commit.message }}'
