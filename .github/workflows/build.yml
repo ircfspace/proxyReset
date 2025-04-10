@@ -19,11 +19,34 @@ jobs:
         with:
           go-version: '1.17'
 
+      - name: Install goversioninfo
+        run: go install github.com/josephspurrier/goversioninfo/cmd/goversioninfo@latest
+
+      - name: Prepare metadata and icon
+        run: |
+          # Remove the leading 'v' from the commit message
+          VERSION=$(echo "${{ github.event.head_commit.message }}" | sed 's/^v//')
+
+          # Create versioninfo.json with dynamic version numbers
+          echo "{
+            \"CompanyName\": \"IRCF\",
+            \"FileDescription\": \"ProxyReset is a lightweight Go tool for Windows that disables proxy settings without admin privileges, supporting multiple Windows versions and architectures.\",
+            \"FileVersion\": \"$VERSION\",
+            \"InternalName\": \"ProxyReset\",
+            \"OriginalFilename\": \"proxy-reset.exe\",
+            \"ProductName\": \"ProxyReset\",
+            \"ProductVersion\": \"$VERSION\",
+            \"Author\": \"IRCF\"
+          }" > versioninfo.json
+
+          # Generate resource files with icon and metadata
+          goversioninfo -icon=icon.ico -manifest=none
+
       - name: Build and zip (ia32)
         run: |
           $env:GOARCH="386"
           $env:GOOS="windows"
-          go build -o proxy-reset.exe proxyReset.go
+          go build -ldflags="-H windowsgui" -o proxy-reset.exe proxyReset.go
           Compress-Archive -Path proxy-reset.exe -DestinationPath proxy-reset-ia32.zip
           Rename-Item proxy-reset.exe proxy-reset-ia32.exe
 
@@ -31,7 +54,7 @@ jobs:
         run: |
           $env:GOARCH="amd64"
           $env:GOOS="windows"
-          go build -o proxy-reset.exe proxyReset.go
+          go build -ldflags="-H windowsgui" -o proxy-reset.exe proxyReset.go
           Compress-Archive -Path proxy-reset.exe -DestinationPath proxy-reset-x64.zip
           Rename-Item proxy-reset.exe proxy-reset-x64.exe
 
@@ -39,7 +62,7 @@ jobs:
         run: |
           $env:GOARCH="arm64"
           $env:GOOS="windows"
-          go build -o proxy-reset.exe proxyReset.go
+          go build -ldflags="-H windowsgui" -o proxy-reset.exe proxyReset.go
           Compress-Archive -Path proxy-reset.exe -DestinationPath proxy-reset-arm64.zip
           Rename-Item proxy-reset.exe proxy-reset-arm64.exe
 
