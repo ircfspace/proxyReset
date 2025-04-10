@@ -19,26 +19,29 @@ jobs:
         with:
           go-version: '1.17'
 
-      - name: Build proxy reset executable (ia32)
+      - name: Build and zip (ia32)
         run: |
           $env:GOARCH="386"
           $env:GOOS="windows"
-          go build -o proxyReset-ia32.exe proxyReset.go
-          Compress-Archive -Path proxyReset-ia32.exe -DestinationPath proxyReset-ia32.zip
+          go build -o proxy-reset.exe proxyReset.go
+          Compress-Archive -Path proxy-reset.exe -DestinationPath proxyReset-ia32.zip
+          Rename-Item proxy-reset.exe proxyReset-ia32.exe
 
-      - name: Build proxy reset executable (x64)
+      - name: Build and zip (x64)
         run: |
           $env:GOARCH="amd64"
           $env:GOOS="windows"
-          go build -o proxyReset-x64.exe proxyReset.go
-          Compress-Archive -Path proxyReset-x64.exe -DestinationPath proxyReset-x64.zip
+          go build -o proxy-reset.exe proxyReset.go
+          Compress-Archive -Path proxy-reset.exe -DestinationPath proxyReset-x64.zip
+          Rename-Item proxy-reset.exe proxyReset-x64.exe
 
-      - name: Build proxy reset executable (arm64)
+      - name: Build and zip (arm64)
         run: |
           $env:GOARCH="arm64"
           $env:GOOS="windows"
-          go build -o proxyReset-arm64.exe proxyReset.go
-          Compress-Archive -Path proxyReset-arm64.exe -DestinationPath proxyReset-arm64.zip
+          go build -o proxy-reset.exe proxyReset.go
+          Compress-Archive -Path proxy-reset.exe -DestinationPath proxyReset-arm64.zip
+          Rename-Item proxy-reset.exe proxyReset-arm64.exe
 
       - name: Upload to releases
         uses: ncipollo/release-action@v1
