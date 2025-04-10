@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    if: startsWith(github.event.head_commit.message, 'v')
 
     steps:
       - name: Checkout code
@@ -22,19 +23,19 @@ jobs:
         run: |
           $env:GOARCH="386"
           $env:GOOS="windows"
-          go build -o proxyReset-ia32.exe proxyreset.go
+          go build -o proxyReset-ia32.exe proxyReset.go
 
       - name: Build proxy reset executable (x64)
         run: |
           $env:GOARCH="amd64"
           $env:GOOS="windows"
-          go build -o proxyReset-x64.exe proxyreset.go
+          go build -o proxyReset-x64.exe proxyReset.go
 
       - name: Build proxy reset executable (arm64)
         run: |
           $env:GOARCH="arm64"
           $env:GOOS="windows"
-          go build -o proxyReset-arm64.exe proxyreset.go
+          go build -o proxyReset-arm64.exe proxyReset.go
 
       - name: Upload to releases
         uses: ncipollo/release-action@v1
