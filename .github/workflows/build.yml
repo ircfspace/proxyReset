@@ -19,16 +19,16 @@ jobs:
         with:
           go-version: '1.18'
 
-      - name: Install goversioninfo
-        run: go install github.com/josephspurrier/goversioninfo/cmd/goversioninfo@latest
+      - name: Install rsrc (for icon)
+        run: go install github.com/akavel/rsrc@latest
 
-      - name: Prepare metadata and icon
+      - name: Prepare the icon
         run: |
           # Remove the leading 'v' from the commit message using PowerShell
           $VERSION = "${{ github.event.head_commit.message }}" -replace '^v', ''
 
-          # Generate resource files with icon and metadata directly via goversioninfo
-          goversioninfo -icon=./icon.ico -manifest=none -windows-version=$VERSION -product-version=$VERSION -file-version=$VERSION -company-name="IRCF" -author="IRCF" -file-description="ProxyReset is a lightweight Go tool for Windows that disables proxy settings without admin privileges, supporting multiple Windows versions and architectures." -product-name="ProxyReset" -original-filename="proxy-reset.exe" -internal-name="ProxyReset"
+          # Use rsrc to embed the icon directly
+          rsrc -manifest=none -ico=icon.ico -o rsrc.syso
 
       - name: Build and zip (ia32)
         run: |
