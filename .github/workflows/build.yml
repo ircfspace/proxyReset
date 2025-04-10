@@ -40,7 +40,7 @@ jobs:
           }" > versioninfo.json
 
           # Generate resource files with icon and metadata
-          goversioninfo -icon=icon.ico -manifest=none
+          goversioninfo -icon=./icon.ico -manifest=none
 
       - name: Build and zip (ia32)
         run: |
