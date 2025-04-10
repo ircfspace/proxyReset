@@ -24,33 +24,33 @@ jobs:
           $env:GOARCH="386"
           $env:GOOS="windows"
           go build -o proxy-reset.exe proxyReset.go
-          Compress-Archive -Path proxy-reset.exe -DestinationPath proxyReset-ia32.zip
-          Rename-Item proxy-reset.exe proxyReset-ia32.exe
+          Compress-Archive -Path proxy-reset.exe -DestinationPath proxy-reset-ia32.zip
+          Rename-Item proxy-reset.exe proxy-reset-ia32.exe
 
       - name: Build and zip (x64)
         run: |
           $env:GOARCH="amd64"
           $env:GOOS="windows"
           go build -o proxy-reset.exe proxyReset.go
-          Compress-Archive -Path proxy-reset.exe -DestinationPath proxyReset-x64.zip
-          Rename-Item proxy-reset.exe proxyReset-x64.exe
+          Compress-Archive -Path proxy-reset.exe -DestinationPath proxy-reset-x64.zip
+          Rename-Item proxy-reset.exe proxy-reset-x64.exe
 
       - name: Build and zip (arm64)
         run: |
           $env:GOARCH="arm64"
           $env:GOOS="windows"
           go build -o proxy-reset.exe proxyReset.go
-          Compress-Archive -Path proxy-reset.exe -DestinationPath proxyReset-arm64.zip
-          Rename-Item proxy-reset.exe proxyReset-arm64.exe
+          Compress-Archive -Path proxy-reset.exe -DestinationPath proxy-reset-arm64.zip
+          Rename-Item proxy-reset.exe proxy-reset-arm64.exe
 
       - name: Upload to releases
         uses: ncipollo/release-action@v1
         with:
           artifacts: |
-            proxyReset-ia32.exe
-            proxyReset-ia32.zip
-            proxyReset-x64.exe
-            proxyReset-x64.zip
-            proxyReset-arm64.exe
-            proxyReset-arm64.zip
+            proxy-reset-ia32.exe
+            proxy-reset-ia32.zip
+            proxy-reset-x64.exe
+            proxy-reset-x64.zip
+            proxy-reset-arm64.exe
+            proxy-reset-arm64.zip
           tag: '${{ github.event.head_commit.message }}'
