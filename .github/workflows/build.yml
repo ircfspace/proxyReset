@@ -27,17 +27,18 @@ jobs:
           # Remove the leading 'v' from the commit message using PowerShell
           $VERSION = "${{ github.event.head_commit.message }}" -replace '^v', ''
 
-          # Create versioninfo.json with dynamic version numbers
-          echo "{
-            \"CompanyName\": \"IRCF\",
-            \"FileDescription\": \"ProxyReset is a lightweight Go tool for Windows that disables proxy settings without admin privileges, supporting multiple Windows versions and architectures.\",
-            \"FileVersion\": \"$VERSION\",
-            \"InternalName\": \"ProxyReset\",
-            \"OriginalFilename\": \"proxy-reset.exe\",
-            \"ProductName\": \"ProxyReset\",
-            \"ProductVersion\": \"$VERSION\",
-            \"Author\": \"IRCF\"
-          }" > versioninfo.json
+          # Create versioninfo.json with dynamic version numbers using PowerShell's Out-File with UTF8 encoding
+          $jsonContent = @{
+            CompanyName    = "IRCF"
+            FileDescription = "ProxyReset is a lightweight Go tool for Windows that disables proxy settings without admin privileges, supporting multiple Windows versions and architectures."
+            FileVersion    = $VERSION
+            InternalName   = "ProxyReset"
+            OriginalFilename = "proxy-reset.exe"
+            ProductName    = "ProxyReset"
+            ProductVersion = $VERSION
+            Author         = "IRCF"
+          } | ConvertTo-Json -Compress
+          $jsonContent | Out-File -FilePath versioninfo.json -Encoding UTF8
 
           # Generate resource files with icon and metadata
           goversioninfo -icon=./icon.ico -manifest=none
