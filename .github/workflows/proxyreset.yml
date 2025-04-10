@@ -18,14 +18,29 @@ jobs:
         with:
           go-version: '1.16'
 
-      - name: Build proxy reset executable (64-bit)
+      - name: Build proxy reset executable (ia32)
+        run: |
+          $env:GOARCH="386"
+          $env:GOOS="windows"
+          go build -o proxyReset-ia32.exe proxyreset.go
+
+      - name: Build proxy reset executable (x64)
         run: |
           $env:GOARCH="amd64"
           $env:GOOS="windows"
-          go build -o proxyreset.exe proxyreset.go
+          go build -o proxyReset-x64.exe proxyreset.go
+
+      - name: Build proxy reset executable (arm64)
+        run: |
+          $env:GOARCH="arm64"
+          $env:GOOS="windows"
+          go build -o proxyReset-arm64.exe proxyreset.go
 
       - name: Upload to releases
         uses: ncipollo/release-action@v1
         with:
-          artifacts: 'proxyreset.exe'
+          artifacts: |
+            proxyReset-ia32.exe
+            proxyReset-x64.exe
+            proxyReset-arm64.exe
           tag: '${{ github.event.head_commit.message }}'
