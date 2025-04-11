@@ -8,7 +8,7 @@ ProxyReset is a lightweight tool written in Go for Windows. It allows users to q
 - Compatible with 32-bit, 64-bit, and ARM64 Windows systems.
 
 ## Installation:
-Simply download the appropriate executable (`proxyReset-ia32.exe`, `proxyReset-x64.exe`, `proxyReset-arm64.exe`) and run it.
+Simply download the appropriate executable (`proxy-reset-ia32.exe`, `proxy-reset-x64.exe`, `proxy-reset-arm64.exe`) and run it.
 
 ## Usage:
 Run the executable, and it will immediately disable the proxy settings without any additional prompts.
